@@ -20,11 +20,13 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import { postData } from '../../services/ServerServices';
-
+import { useStyles } from './JoinerFormCss';
+import AdminAppBar from "../AdminAppBar"
 
 
 export default function JoinerForm(){
 
+  var classes=useStyles();
 
 
 /*************Getter & Setter ******************************************************************************************* */
@@ -203,7 +205,7 @@ const handleError=(inputs,value)=>{
 
     if(!postcode_Pincode || !(/^[0-9]{6}$/.test(postcode_Pincode)))
     {
-      handleError("postcode_Pincode","Invalid Postcode/Pincode")
+      handleError("postcode_Pincode","Please enter 6 digit Postcode/Pincode")
       isValid=false
     }
 
@@ -217,7 +219,7 @@ const handleError=(inputs,value)=>{
 
     if(!contactNumber|| !(/^[0-9]{10}$/.test(contactNumber)))
     {
-      handleError("contactNumber","Invalid Contact Number ")
+      handleError("contactNumber","Please enter 10 digit Contact Number ")
       isValid=false
     }
 
@@ -242,7 +244,7 @@ const handleError=(inputs,value)=>{
 
         if(!accountNumber || !(/^([0-9]{11})|([0-9]{2}-[0-9]{3}-[0-9]{6})$/.test(accountNumber)))
         {
-          handleError("accountNumber","Invalid Account Number  ")
+          handleError("accountNumber","Please Enter 11 digit Account Number   ")
           isValid=false
          }
 
@@ -270,7 +272,7 @@ const handleError=(inputs,value)=>{
 
      if(!emergencyContactsPhoneNumber|| !(/^[0-9]{10}$/.test(emergencyContactsPhoneNumber)))
      {
-       handleError("emergencyContactsPhoneNumber","Invalid Emergency Contact Number ")
+       handleError("emergencyContactsPhoneNumber","Please enter 10 digit Contact Number ")
        isValid=false
       }
 
@@ -315,33 +317,8 @@ const handleError=(inputs,value)=>{
            }
          
 
-           if(!secondCompanyName)
-          {
-            handleError("secondCompanyName","Invalid  Company Name ")
-            isValid=false
-           }
-         
 
-           if(!secondPositionHeld)
-          {
-            handleError("secondPositionHeld","Invalid Position Held ")
-            isValid=false
-           }
-         
 
-           if(!secondEmployementDates)
-          {
-            handleError("secondEmployementDates","Invalid Employement Dates ")
-            isValid=false
-           }
-         
-
-           if(!secondReasonForLeaving)
-          {
-            handleError("secondReasonForLeaving","Invalid Reason For Leaving ")
-            isValid=false
-           }
-         
 
            if(!paySlip)
           {
@@ -387,7 +364,7 @@ const handleError=(inputs,value)=>{
 
            if(!referenceContactNumber|| !(/^[0-9]{10}$/.test(referenceContactNumber)))
           {
-            handleError("referenceContactNumber","Invalid Reference Contact Number ")
+            handleError("referenceContactNumber","Please enter 10 digit Contact Number ")
             isValid=false
            }
          
@@ -429,7 +406,7 @@ const handleError=(inputs,value)=>{
  
             if(!secondReferenceContactNumber|| !(/^[0-9]{10}$/.test(secondReferenceContactNumber)))
            {
-             handleError("secondReferenceContactNumber","Invalid Reference Contact Number ")
+             handleError("secondReferenceContactNumber","Please enter 10 digit Contact Number ")
              isValid=false
             }
           
@@ -609,9 +586,9 @@ const HandleSubmit=async()=>{
   }
 
 
-  
+  var FormName="Filling Joiner form"
 
-var body={'email':emailAddress,'name':fullName}
+var body={'email':emailAddress,'name':fullName,'formname':FormName}
 
 const res= await postData("register/register",body,{
   header:{Accept:"application/json",
@@ -723,59 +700,67 @@ const handleDob = (date) => {
   
     const PersonalDetails=()=>{ 
         return(<div >
-            <div style={{display:"flex",flexDirection:'row',marginLeft:250,padding:8,}}  >
+            <Grid container spacing={2}>
+            <Grid item xs={1}  >
+      
 
-<img src='/logo.png' width='87'/>
-
-
-<div  style={{marginLeft:20,padding:8, fontWeight:'bold',fontSize:25,}}>
-Joiner Form
-
-</div></div>
-          <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-          <h3 style={{marginTop:25,fontSize:16,}}>Personal Details</h3>
-             </div>
-           <Grid container spacing={3}>
-           <Grid item xs={5}>
-         <TextField fullWidth error={!error.fullName?false:true} helperText={error.fullName} onFocus={()=>handleError('fullName',null)}   value={fullName} onChange={(event)=>setFullName(event.target.value)} label="Full Name of the Employee" variant="outlined" />
+          <img src='/logo.png' width='70'/>
+          </Grid>
+       <Grid item xs={3} style={{display:"flex",alignItems:"flex-start",fontSize:21,color:"#273272",fontWeight:'bolder',marginTop:10,marginLeft:6}}>
+         JOINER FORM
+        
+        </Grid>
+        
+   
+      </Grid>
+<hr style={{marginTop:30,marginRight:0}} color="#3498db" width="100%" ></hr>
+         
+          <h3 style={{marginTop:25,fontSize:16,color:"#273272"}}>Personal Details</h3>
+             
+           <Grid container spacing={2}>
+           <Grid item xs={12} lg={5}>
+         <TextField fullWidth InputLabelProps={{style: {fontSize: 13}}} size="small" error={!error.fullName?false:true} helperText={error.fullName} onFocus={()=>handleError('fullName',null)}   value={fullName} onChange={(event)=>setFullName(event.target.value)} label="Full Name of the Employee" variant="outlined" />
 
          </Grid>
-         <Grid item xs={3}>
+         <Grid item xs={4} lg={3}>
          <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Country Code</InputLabel>
+        <InputLabel id="demo-simple-select-label" style={{fontSize:13}}>Country Code</InputLabel>
         <Select
+   
           labelId="Code"
           id="Code"
           value={countryCode}
           label="Code"
           onChange={handleCountryCode}
           error={!error.countryCode?false:true} helperText={error.countryCode} onFocus={()=>handleError('countryCode',null)}
-        >
+          size="small" 
+       
+          inputProps={{style: {fontSize: 13}}}>
           <MenuItem value={"+91"}>India +91</MenuItem>
           <MenuItem value={"+1"}>USA +1</MenuItem>
           <MenuItem value={"+7"}>Russia +7</MenuItem>
         </Select>
       </FormControl>
       </Grid>
-      <Grid item xs={4}>
-         <TextField fullWidth  error={!error.contactNumber?false:true} helperText={error.contactNumber} onFocus={()=>handleError('contactNumber',null)}
+      <Grid item xs={4} lg={4}>
+         <TextField InputLabelProps={{style: {fontSize: 13}}} fullWidth size="small" error={!error.contactNumber?false:true} helperText={error.contactNumber} onFocus={()=>handleError('contactNumber',null)}
         value={contactNumber} onChange={(event)=>setContactNumber(event.target.value)}  label="Personal Contact Number" variant="outlined" />
 
          </Grid>
 
          
          <Grid item xs={4}>
-         <TextField fullWidth error={!error.fullPermanentAddress?false:true} helperText={error.fullPermanentAddress} onFocus={()=>handleError('fullPermanentAddress',null)}   value={fullPermanentAddress}  onChange={(event)=>setFullPermanentAddress(event.target.value)}  label="Full Permanent Address" variant="outlined" />
+         <TextField InputLabelProps={{style: {fontSize: 13}}} size="small" fullWidth error={!error.fullPermanentAddress?false:true} helperText={error.fullPermanentAddress} onFocus={()=>handleError('fullPermanentAddress',null)}   value={fullPermanentAddress}  onChange={(event)=>setFullPermanentAddress(event.target.value)}  label="Full Permanent Address" variant="outlined" />
 
          </Grid>
 
          <Grid item xs={4}>
-         <TextField fullWidth  error={!error.currentAddress?false:true} helperText={error.currentAddress} onFocus={()=>handleError('currentAddress',null)}  value={currentAddress}  onChange={(event)=>setCurrentAddress(event.target.value)}  label="Current Address" variant="outlined" />
+         <TextField InputLabelProps={{style: {fontSize: 13}}} fullWidth size="small" error={!error.currentAddress?false:true} helperText={error.currentAddress} onFocus={()=>handleError('currentAddress',null)}  value={currentAddress}  onChange={(event)=>setCurrentAddress(event.target.value)}  label="Current Address" variant="outlined" />
 
          </Grid>
 
          <Grid item xs={4}>
-         <TextField fullWidth error={!error.emailAddress?false:true} helperText={error.emailAddress} onFocus={()=>handleError('emailAddress',null)} value={emailAddress}  onChange={(event)=>setEmailAddress(event.target.value)}  label="Personal Email Address" variant="outlined" />
+         <TextField InputLabelProps={{style: {fontSize: 13}}} fullWidth size="small"  error={!error.emailAddress?false:true} helperText={error.emailAddress} onFocus={()=>handleError('emailAddress',null)} value={emailAddress}  onChange={(event)=>setEmailAddress(event.target.value)}  label="Personal Email Address" variant="outlined" />
 
          </Grid>
          
@@ -784,31 +769,31 @@ Joiner Form
 
 
          <Grid item xs={2}>
-         <TextField fullWidth error={!error.nationality?false:true} helperText={error.nationality} onFocus={()=>handleError('nationality',null)}  value={nationality} onChange={(event)=>setNationality(event.target.value)} label="Nationality" variant="outlined" />
+         <TextField  InputLabelProps={{style: {fontSize: 13}}} fullWidth size="small" error={!error.nationality?false:true} helperText={error.nationality} onFocus={()=>handleError('nationality',null)}  value={nationality} onChange={(event)=>setNationality(event.target.value)} label="Nationality" variant="outlined" />
 
          </Grid>
 
          
          <Grid item xs={2}>
-         <TextField fullWidth error={!error.city?false:true} helperText={error.city} onFocus={()=>handleError('city',null)}   value={city}  onChange={(event)=>setCity(event.target.value)}  label="City" variant="outlined" />
+         <TextField  InputLabelProps={{style: {fontSize: 13}}} fullWidth size="small" error={!error.city?false:true} helperText={error.city} onFocus={()=>handleError('city',null)}   value={city}  onChange={(event)=>setCity(event.target.value)}  label="City" variant="outlined" />
 
          </Grid>
          <Grid item xs={2}>
-         <TextField fullWidth  error={!error.postcode_Pincode?false:true} helperText={error.postcode_Pincode} onFocus={()=>handleError('postcode_Pincode',null)}  value={postcode_Pincode} onChange={(event)=>setPostcdoe_Pincode(event.target.value)}  label="Postcode/Pincode" variant="outlined" />
+         <TextField InputLabelProps={{style: {fontSize: 13}}} fullWidth size="small" error={!error.postcode_Pincode?false:true} helperText={error.postcode_Pincode} onFocus={()=>handleError('postcode_Pincode',null)}  value={postcode_Pincode} onChange={(event)=>setPostcdoe_Pincode(event.target.value)}  label="Postcode/Pincode" variant="outlined" />
 
          </Grid>
         
 
 
          <Grid item xs={3}>
-         <div>Date of Birth</div>
+       
          <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container justifyContent="space-around">
         
         <KeyboardDatePicker
-          margin="normal"
-         
-         variant='contained'
+        InputLabelProps={{style: {fontSize: 13}}}
+          label="Date of Birth"
+          inputVariant="outlined"
           format="dd/MM/yyyy"
           value={dob}
           onChange={handleDob}
@@ -817,7 +802,7 @@ Joiner Form
             'aria-label': 'change date',
           }}
           error={!error.dob?false:true} helperText={error.dob} onFocus={()=>handleError('dob',null)}
-        />
+          size="small"/>
        
       </Grid>
     </MuiPickersUtilsProvider>
@@ -828,13 +813,14 @@ Joiner Form
 
     <Grid item xs={3} style={{justifyContent:''}}>
          <FormControl  >
-      <FormLabel  error={!error.gender?false:true} helperText={error.gender} onFocus={()=>handleError('gender',null)} >Gender</FormLabel >
+      <FormLabel size="small" error={!error.gender?false:true} helperText={error.gender} onFocus={()=>handleError('gender',null)} >Gender</FormLabel >
       <RadioGroup
         row
         aria-labelledby="demo-row-radio-buttons-group-label"
         name="row-radio-buttons-group"
         value={gender}
-       
+      
+        
       >
       
         <FormControlLabel  onChange={handleGender}   value="Male"  control={<Radio />} label="Male" />
@@ -856,21 +842,21 @@ Joiner Form
 
     const BankDetails=()=>{ 
         return(<div>
-             <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-             <h3 style={{fontSize:16}}>Bank Details</h3>
-          </div>
-          <Grid container spacing={3}>
+            
+            <h3 style={{marginTop:10,fontSize:16,color:"#273272",}}>Bank Details</h3>
+         
+          <Grid container spacing={2}>
          
          <Grid item xs={4}>
-         <TextField fullWidth error={!error.accountNumber?false:true} helperText={error.accountNumber} onFocus={()=>handleError('accountNumber',null)}  value={accountNumber}  onChange={(event)=>setAccountNumber(event.target.value)}  label="Account Number" variant="outlined" />
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" error={!error.accountNumber?false:true} helperText={error.accountNumber} onFocus={()=>handleError('accountNumber',null)}  value={accountNumber}  onChange={(event)=>setAccountNumber(event.target.value)}  label="Account Number" variant="outlined" />
 
          </Grid>
          <Grid item xs={4}>
-         <TextField fullWidth error={!error.bankName?false:true} helperText={error.bankName} onFocus={()=>handleError('bankName',null)}  value={bankName}  onChange={(event)=>setBankName(event.target.value)}  label="Bank Name" variant="outlined" />
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" error={!error.bankName?false:true} helperText={error.bankName} onFocus={()=>handleError('bankName',null)}  value={bankName}  onChange={(event)=>setBankName(event.target.value)}  label="Bank Name" variant="outlined" />
 
          </Grid>
          <Grid item xs={4}>
-         <TextField fullWidth error={!error.sortCode_IFSCCode?false:true} helperText={error.sortCode_IFSCCode} onFocus={()=>handleError('sortCode_IFSCCode',null)}  value={sortCode_IFSCCode}  onChange={(event)=>setSortCode_IFSCCode(event.target.value)}  label="Sort Code/IFSC code" variant="outlined" />
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" error={!error.sortCode_IFSCCode?false:true} helperText={error.sortCode_IFSCCode} onFocus={()=>handleError('sortCode_IFSCCode',null)}  value={sortCode_IFSCCode}  onChange={(event)=>setSortCode_IFSCCode(event.target.value)}  label="Sort Code/IFSC code" variant="outlined" />
 
          </Grid>
         
@@ -887,20 +873,20 @@ Joiner Form
     
     const EmergencyContact=()=>{ 
         return(<div>
-             <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-             <h3 style={{fontSize:16,}}>Emergency Contact </h3>
-               </div>
-          <Grid container spacing={3}>
+            
+            <h3 style={{marginTop:20,fontSize:16,color:"#273272",}}>Emergency Contact</h3>
+            
+          <Grid container spacing={2}>
           <Grid item xs={4}>
-         <TextField fullWidth error={!error.emergencyContactFullName?false:true} helperText={error.emergencyContactFullName} onFocus={()=>handleError('emergencyContactFullName',null)}  value={emergencyContactFullName}  onChange={(event)=>setEmergencyContactFullName(event.target.value)}  label="Full Name" variant="outlined" />
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" error={!error.emergencyContactFullName?false:true} helperText={error.emergencyContactFullName} onFocus={()=>handleError('emergencyContactFullName',null)}  value={emergencyContactFullName}  onChange={(event)=>setEmergencyContactFullName(event.target.value)}  label="Full Name" variant="outlined" />
 
          </Grid>
          <Grid item xs={4}>
-         <TextField fullWidth error={!error.relationship?false:true} helperText={error.relationship} onFocus={()=>handleError('relationship',null)}  value={relationship}  onChange={(event)=>setRelatioship(event.target.value)}  label="Relationship" variant="outlined" />
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" error={!error.relationship?false:true} helperText={error.relationship} onFocus={()=>handleError('relationship',null)}  value={relationship}  onChange={(event)=>setRelatioship(event.target.value)}  label="Relationship" variant="outlined" />
 
          </Grid>
          <Grid item xs={4}>
-         <TextField fullWidth  error={!error.emergencyContactsPhoneNumber?false:true} helperText={error.emergencyContactsPhoneNumber} onFocus={()=>handleError('emergencyContactsPhoneNumber',null)} value={emergencyContactsPhoneNumber}  onChange={(event)=>setEmergencyContactsPhoneNumber(event.target.value)}  label="Phone Number " variant="outlined" />
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" error={!error.emergencyContactsPhoneNumber?false:true} helperText={error.emergencyContactsPhoneNumber} onFocus={()=>handleError('emergencyContactsPhoneNumber',null)} value={emergencyContactsPhoneNumber}  onChange={(event)=>setEmergencyContactsPhoneNumber(event.target.value)}  label="Phone Number " variant="outlined" />
 
          </Grid>
         
@@ -923,85 +909,96 @@ Joiner Form
 
         setBtnStatus(true)
           }
-        
+          
+          const handleBtnStatus=()=>{
 
-        return(<div>
-           <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-           <h3 style={{fontSize:16}}>Employement History </h3>
-          </div>
-          <Grid container spacing={3}>
-          <Grid item xs={3}>
-         <TextField fullWidth error={!error.companyName?false:true} helperText={error.companyName} onFocus={()=>handleError('companyName',null)}  value={companyName}  onChange={(event)=>setCompanyName(event.target.value)}  label="Company Name" variant="outlined" />
+            setBtnStatus(false)
+              }
+       return(<div>
+        <h3 style={{marginTop:20,fontSize:16,color:"#273272",}}>Employement History</h3>
+         <Grid container spacing={2}>
+         <Grid item xs={3}>
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" error={!error.companyName?false:true} helperText={error.companyName} onFocus={()=>handleError('companyName',null)}  value={companyName}  onChange={(event)=>setCompanyName(event.target.value)}  label="Company Name" variant="outlined" />
 
          </Grid>
          <Grid item xs={3}>
-         <TextField fullWidth error={!error.positionHeld?false:true} helperText={error.positionHeld} onFocus={()=>handleError('positionHeld',null)}  value={positionHeld}  onChange={(event)=>setPositionHeld(event.target.value)}  label="Position Held" variant="outlined" />
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}   fullWidth size="small" error={!error.positionHeld?false:true} helperText={error.positionHeld} onFocus={()=>handleError('positionHeld',null)}  value={positionHeld}  onChange={(event)=>setPositionHeld(event.target.value)}  label="Position Held" variant="outlined" />
 
          </Grid>
          <Grid item xs={3}>
-         <TextField fullWidth error={!error.employementDates?false:true} helperText={error.employementDates} onFocus={()=>handleError('employementDates',null)}  value={employementDates}  onChange={(event)=>setEmployementDates(event.target.value)}  label="Employment dates " variant="outlined" />
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" error={!error.employementDates?false:true} helperText={error.employementDates} onFocus={()=>handleError('employementDates',null)}  value={employementDates}  onChange={(event)=>setEmployementDates(event.target.value)}  label="Employment dates " variant="outlined" />
 
          </Grid>
          <Grid item xs={3}>
-         <TextField fullWidth error={!error.reasonForLeaving?false:true} helperText={error.reasonForLeaving} onFocus={()=>handleError('reasonForLeaving',null)}  value={reasonForLeaving}  onChange={(event)=>setReasonForLeaving(event.target.value)}  label="Reason for leaving " variant="outlined" />
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" error={!error.reasonForLeaving?false:true} helperText={error.reasonForLeaving} onFocus={()=>handleError('reasonForLeaving',null)}  value={reasonForLeaving}  onChange={(event)=>setReasonForLeaving(event.target.value)}  label="Reason for leaving " variant="outlined" />
 
          </Grid>
+
          <Grid item xs={12}>
-          <Button onClick={HandleAddRows}  variant="contained">Add More</Button>
+          <Button size="small" onClick={HandleAddRows} onDoubleClick={handleBtnStatus}  variant="contained">Add More</Button>
           {btnStatus?<div  style={{marginTop:20}} >
-            <Grid container spacing={3}>
+            <Grid container spacing={2}>
             <Grid item xs={3}>
-         <TextField fullWidth error={!error.secondCompanyName?false:true} helperText={error.secondCompanyName} onFocus={()=>handleError('secondCompanyName',null)}  value={secondCompanyName}  onChange={(event)=>setSecondCompanyName(event.target.value)}  label="Company Name" variant="outlined" />
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small"  value={secondCompanyName}  onChange={(event)=>setSecondCompanyName(event.target.value)}  label="Company Name" variant="outlined" />
 
          </Grid>
          <Grid item xs={3}>
-         <TextField fullWidth error={!error.secondPositionHeld?false:true} helperText={error.secondPositionHeld} onFocus={()=>handleError('secondPositionHeld',null)}  value={secondPositionHeld}  onChange={(event)=>setSecondPositionHeld(event.target.value)}  label="Position Held" variant="outlined" />
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth  size="small"  value={secondPositionHeld}  onChange={(event)=>setSecondPositionHeld(event.target.value)}  label="Position Held" variant="outlined" />
 
          </Grid>
          <Grid item xs={3}>
-         <TextField fullWidth error={!error.secondEmployementDates?false:true} helperText={error.secondEmployementDates} onFocus={()=>handleError('secondEmployementDates',null)}  value={secondEmployementDates}  onChange={(event)=>setSecondEmployementDates(event.target.value)}  label="Employment dates " variant="outlined" />
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small"   value={secondEmployementDates}  onChange={(event)=>setSecondEmployementDates(event.target.value)}  label="Employment dates " variant="outlined" />
 
          </Grid>
          <Grid item xs={3}>
-         <TextField fullWidth error={!error.secondReasonForLeaving?false:true} helperText={error.secondReasonForLeaving} onFocus={()=>handleError('secondReasonForLeaving',null)}  value={secondReasonForLeaving}  onChange={(event)=>setSecondReasonForLeaving(event.target.value)}  label="Reason for leaving " variant="outlined" />
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" value={secondReasonForLeaving}  onChange={(event)=>setSecondReasonForLeaving(event.target.value)}  label="Reason for leaving " variant="outlined" />
 
          </Grid>
+
+
          </Grid>
+
+
         </div>
         :<div></div>}
          </Grid>
-        
 
-         <Grid item xs={6} style={{display:'flex',flexDirection:"row"}}>
-          <div style={{marginLeft:20,padding:8,fontSize:16}}>
+
+         <Grid container spacing={2} style={{marginTop:0,marginLeft:0,fontSize:14,}}>
+
+         <Grid item xs={6}  >
+         
          Please share your last six months of pay slips along with their Bank Statement. (Experienced candidates only) 
-         </div>
+        
             </Grid>
-         <div  style={{display:'flex',padding:50,justifyContent:"center",alignItems:"center"}} >
-         <Button variant="contained" component="label">
+
+            <Grid item xs={2}   >
+         <Button size="small" variant="contained" component="label">
          Pay Slip
         <input hidden accept="image/*" multiple type="file"  onChange={(event)=>setPaySlip({fileName:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]})} />
       </Button> 
-      </div>
+
+      
+      </Grid>
       
 
+      <Grid item xs={4}   >
+
       <Avatar 
-              style={{display:'flex',marginTop:30}}
+              style={{display:'flex'}}
               alt="Remy Sharp"
               variant="rounded"
               src={paySlip.fileName}
-              sx={{ width: 100, height: 100 }}
+              sx={{ width: 75, height: 75}}
               error={!error.paySlip?false:true} helperText={error.paySlip} onFocus={()=>handleError('paySlip',null)} 
-            />
-           
-      </Grid>
+              size="small"   />
 
-          
-          
-     
-          
+            </Grid>
 
-        </div>)
+            </Grid>
+
+          </Grid>
+       </div>)
     }
 
 
@@ -1009,41 +1006,41 @@ Joiner Form
     const EducationalBackground=()=>{ 
       return(<div>
       
-        <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-      
-        <h3 style={{fontSize:16,}}>Educational Background </h3>
-        </div>
-        <Grid container spacing={3}>
-        <div style={{marginLeft:20,padding:8, marginTop:25,fontSize:16,}}>
-        Please provide details of your highest educational qualifications:    
-        </div>
-        <Grid item xs={6} style={{display:'flex',flexDirection:"row"}}>
-        <TextField fullWidth error={!error.nameOfDegreeDiploma?false:true} helperText={error.nameOfDegreeDiploma} onFocus={()=>handleError('nameOfDegreeDiploma',null)}  value={nameOfDegreeDiploma}  onChange={(event)=>setNameOfDegreeDiploma(event.target.value)}  label="Name of the Degree/Diploma" variant="outlined" />
+    
+      <h3 style={{marginTop:8,fontSize:16,color:"#273272",}}> Educational Background</h3>
+        
+        <Grid container spacing={2}>
+        
+        <Grid item xs={12} style={{marginLeft:13,padding:5,fontSize:14}}>
+        Please provide details of your highest educational qualifications: 
+              </Grid>
 
-      
-         </Grid>
-         <div  style={{display:'flex',padding:50,justifyContent:"center",alignItems:"center"}} >
-       
-         
-         <Button variant="contained" component="label">
+              <Grid item xs={6} >
+          
+          <TextField   InputLabelProps={{style: {fontSize: 13}}}  size="small" fullWidth error={!error.nameOfDegreeDiploma?false:true} helperText={error.nameOfDegreeDiploma} onFocus={()=>handleError('nameOfDegreeDiploma',null)}  value={nameOfDegreeDiploma}  onChange={(event)=>setNameOfDegreeDiploma(event.target.value)}  label="Name of the Degree/Diploma" variant="outlined" />
+           </Grid>
+
+           <Grid item xs={2} >
+           <Button  size="small" variant="contained" component="label">
        Uplaod 
         <input hidden accept="image/*" multiple type="file"  onChange={(event)=>setDegreeDiplomaPicture({fileName:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]})} />
       </Button> 
-      </div>
-      
 
-      <Avatar 
-              style={{display:'flex',marginTop:30}}
+           </Grid>
+
+           <Grid item xs={4} >
+           <Avatar 
+             
               alt="Remy Sharp"
               variant="rounded"
               src={degreeDiplomaPicture.fileName}
-              sx={{ width: 100, height: 100 }}
+              sx={{ width: 75, height:75 }}
               error={!error.degreeDiplomaPicture?false:true} helperText={error.degreeDiplomaPicture} onFocus={()=>handleError('degreeDiplomaPicture',null)}
-            />
-      
-      
-          </Grid>
-        
+              />
+           </Grid>
+
+              </Grid>
+  
         
         
 
@@ -1059,17 +1056,17 @@ Joiner Form
     const TaxInformation=()=>{ 
         return(<div>
         
-          <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
+         
         
-          <h3 style={{fontSize:16,}}>Tax Information </h3>
-          </div>
-          <Grid container spacing={3}>
+        <h3 style={{marginTop:8,fontSize:16,color:"#273272",}}> Tax Information</h3>
+         
+          <Grid container spacing={2}>
           <Grid item xs={6}>
-         <TextField fullWidth error={!error.nationalInsuranceNumber?false:true} helperText={error.nationalInsuranceNumber} onFocus={()=>handleError('nationalInsuranceNumber',null)}  value={nationalInsuranceNumber}  onChange={(event)=>setNationalInsuranceNumber(event.target.value)}  label="National Insurance Number" variant="outlined" />
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" error={!error.nationalInsuranceNumber?false:true} helperText={error.nationalInsuranceNumber} onFocus={()=>handleError('nationalInsuranceNumber',null)}  value={nationalInsuranceNumber}  onChange={(event)=>setNationalInsuranceNumber(event.target.value)}  label="National Insurance Number" variant="outlined" />
 
          </Grid>
          <Grid item xs={6}>
-         <TextField fullWidth error={!error.taxCode?false:true} helperText={error.taxCode} onFocus={()=>handleError('taxCode',null)}  value={taxCode}  onChange={(event)=>setTaxCode(event.target.value)}  label="Tax Code" variant="outlined" />
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" error={!error.taxCode?false:true} helperText={error.taxCode} onFocus={()=>handleError('taxCode',null)}  value={taxCode}  onChange={(event)=>setTaxCode(event.target.value)}  label="Tax Code" variant="outlined" />
 
          </Grid>
         
@@ -1086,32 +1083,36 @@ Joiner Form
 
     const References=()=>{ 
         return(<div>
-            <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-            <h3 style={{fontSize:16,}}>References </h3>
-          </div>
-          <div style={{marginLeft:20,marginBottom:10,padding:8,fontSize:16}}>
-          Please provide the details of two references, one professional and one personal, that we can contact to learn more about your work experience and character (Part of our Hiring Process): 
-          </div>
-          <h3 style={{fontSize:16,}}>Reference 1</h3>
-          <Grid container spacing={3}>
+           
+            
+           <h3 style={{fontSize:17,color:"#273272",fontWeight:'bolder',marginTop:30}}>References </h3>
+        
+  <Grid container spacing={2}>
+  
+  <Grid style={{marginLeft:13,padding:5,fontSize:14}}>
+  Please provide the details of two references, one professional and one personal, that we can contact to learn more about your work experience and character (Part of our Hiring Process)
+        </Grid>
+        </Grid>
+          <h3 style={{fontSize:16,color:"#273272"}}>Reference 1</h3>
+          <Grid container spacing={2}>
           <Grid item xs={5}>
-         <TextField fullWidth error={!error.referenceName?false:true} helperText={error.referenceName} onFocus={()=>handleError('referenceName',null)}  value={referenceName}  onChange={(event)=>setReferenceName(event.target.value)}  label="Reference Name" variant="outlined" />
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" error={!error.referenceName?false:true} helperText={error.referenceName} onFocus={()=>handleError('referenceName',null)}  value={referenceName}  onChange={(event)=>setReferenceName(event.target.value)}  label="Reference Name" variant="outlined" />
 
          </Grid>
          <Grid item xs={4}>
-         <TextField fullWidth error={!error.referenceCompany?false:true} helperText={error.referenceCompany} onFocus={()=>handleError('referenceCompany',null)}  value={referenceCompany}  onChange={(event)=>setReferenceCompany(event.target.value)}  label="Company" variant="outlined" />
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" error={!error.referenceCompany?false:true} helperText={error.referenceCompany} onFocus={()=>handleError('referenceCompany',null)}  value={referenceCompany}  onChange={(event)=>setReferenceCompany(event.target.value)}  label="Company" variant="outlined" />
 
          </Grid>
-         <Grid item xs={2}>
-         <TextField fullWidth error={!error.referencePosition?false:true} helperText={error.referencePosition} onFocus={()=>handleError('referencePosition',null)}  value={referencePosition}  onChange={(event)=>setReferencePosition(event.target.value)}  label="Position" variant="outlined" />
-
-         </Grid>
-         <Grid item xs={6}>
-         <TextField fullWidth error={!error.referenceContactNumber?false:true} helperText={error.referenceContactNumber} onFocus={()=>handleError('referenceContactNumber',null)}  value={referenceContactNumber}  onChange={(event)=>setReferenceContactNumber(event.target.value)}  label="Contact Number" variant="outlined" />
+         <Grid item xs={3}>
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" error={!error.referencePosition?false:true} helperText={error.referencePosition} onFocus={()=>handleError('referencePosition',null)}  value={referencePosition}  onChange={(event)=>setReferencePosition(event.target.value)}  label="Position" variant="outlined" />
 
          </Grid>
          <Grid item xs={6}>
-         <TextField fullWidth error={!error.referenceEmail?false:true} helperText={error.referenceEmail} onFocus={()=>handleError('referenceEmail',null)}  value={referenceEmail}  onChange={(event)=>setReferenceEmail(event.target.value)}  label="Email" variant="outlined" />
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" error={!error.referenceContactNumber?false:true} helperText={error.referenceContactNumber} onFocus={()=>handleError('referenceContactNumber',null)}  value={referenceContactNumber}  onChange={(event)=>setReferenceContactNumber(event.target.value)}  label="Contact Number" variant="outlined" />
+
+         </Grid>
+         <Grid item xs={6}>
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" error={!error.referenceEmail?false:true} helperText={error.referenceEmail} onFocus={()=>handleError('referenceEmail',null)}  value={referenceEmail}  onChange={(event)=>setReferenceEmail(event.target.value)}  label="Email" variant="outlined" />
 
          </Grid>
         
@@ -1121,33 +1122,34 @@ Joiner Form
 
 
             
-            <h3 style={{fontSize:16,}}>Reference 2</h3>
-          <Grid container spacing={3}>
+            <h3 style={{fontSize:16,color:"#273272"}}>Reference 2</h3>
+          <Grid  container spacing={2}>
           <Grid item xs={5}>
-         <TextField fullWidth error={!error.secondReferenceName?false:true} helperText={error.secondReferenceName} onFocus={()=>handleError('secondReferenceName',null)}  value={secondReferenceName}  onChange={(event)=>setSecondReferenceName(event.target.value)}  label="Reference Name" variant="outlined" />
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" error={!error.secondReferenceName?false:true} helperText={error.secondReferenceName} onFocus={()=>handleError('secondReferenceName',null)}  value={secondReferenceName}  onChange={(event)=>setSecondReferenceName(event.target.value)}  label="Reference Name" variant="outlined" />
 
          </Grid>
          <Grid item xs={4}>
-         <TextField fullWidth error={!error.secondReferenceCompany?false:true} helperText={error.secondReferenceCompany} onFocus={()=>handleError('secondReferenceCompany',null)}  value={secondReferenceCompany}  onChange={(event)=>setSecondReferenceCompany(event.target.value)}  label="Company" variant="outlined" />
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" error={!error.secondReferenceCompany?false:true} helperText={error.secondReferenceCompany} onFocus={()=>handleError('secondReferenceCompany',null)}  value={secondReferenceCompany}  onChange={(event)=>setSecondReferenceCompany(event.target.value)}  label="Company" variant="outlined" />
 
          </Grid>
-         <Grid item xs={2}>
-         <TextField fullWidth error={!error.secondReferencePosition?false:true} helperText={error.secondReferencePosition} onFocus={()=>handleError('secondReferencePosition',null)}  value={secondReferencePosition}  onChange={(event)=>setSecondReferencePosition(event.target.value)}  label="Position" variant="outlined" />
-
-         </Grid>
-         <Grid item xs={6}>
-         <TextField fullWidth error={!error.secondReferenceContactNumber?false:true} helperText={error.secondReferenceContactNumber} onFocus={()=>handleError('secondReferenceContactNumber',null)}  value={secondReferenceContactNumber}  onChange={(event)=>setSecondReferenceContactNumber(event.target.value)}  label="Contact Number" variant="outlined" />
+         <Grid item xs={3}>
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" error={!error.secondReferencePosition?false:true} helperText={error.secondReferencePosition} onFocus={()=>handleError('secondReferencePosition',null)}  value={secondReferencePosition}  onChange={(event)=>setSecondReferencePosition(event.target.value)}  label="Position" variant="outlined" />
 
          </Grid>
          <Grid item xs={6}>
-         <TextField fullWidth error={!error.secondReferenceEmail?false:true} helperText={error.secondReferenceEmail} onFocus={()=>handleError('secondReferenceEmail',null)}  value={secondReferenceEmail}  onChange={(event)=>setSecondReferenceEmail(event.target.value)}  label="Email" variant="outlined" />
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" error={!error.secondReferenceContactNumber?false:true} helperText={error.secondReferenceContactNumber} onFocus={()=>handleError('secondReferenceContactNumber',null)}  value={secondReferenceContactNumber}  onChange={(event)=>setSecondReferenceContactNumber(event.target.value)}  label="Contact Number" variant="outlined" />
+
+         </Grid>
+         <Grid item xs={6}>
+         <TextField   InputLabelProps={{style: {fontSize: 13}}}  fullWidth size="small" error={!error.secondReferenceEmail?false:true} helperText={error.secondReferenceEmail} onFocus={()=>handleError('secondReferenceEmail',null)}  value={secondReferenceEmail}  onChange={(event)=>setSecondReferenceEmail(event.target.value)}  label="Email" variant="outlined" />
 
          </Grid>
         
         
             </Grid>
 
-          
+      
+
           
 
         </div>)
@@ -1161,76 +1163,30 @@ Joiner Form
     };
     const Acknowledgement=()=>{ 
         return(<div>
-           <div style={{display:"flex",justifyContent:"center",alignItems:"center"}}>
-           <h3 style={{fontSize:16,}}>Acknowledgement </h3>
-          </div>
-  <Grid container spacing={3}>
-  <div style={{padding:20}}>
-  <div style={{marginLeft:20,padding:8,fontSize:16}}>
-        I acknowledge that the information provided in this form is accurate and complete to the best of my knowledge. I understand that any false statements or omissions may result in disciplinary action, up to and including termination of employment.  
-        </div>
-        </div>
-         
-        <div style={{display:'flex',justifyContent:"center",alignItems:"center",flexDirection:"column"}}>
-
-
-        <div style={{display:'flex',justifyContent:"center",alignItems:"center",flexDirection:"row"}}>
-
-       
-
-        <div style={{display:'flex',justifyContent:"center",alignItems:"center",flexDirection:"row"}}>
-         <div  style={{display:'flex',padding:50,justifyContent:"center",alignItems:"center",}} >
-         <Button variant="contained" component="label">
-        Signature
-        <input hidden accept="image/*" multiple type="file"  onChange={(event)=>setSignature({fileName:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]})} />
-      </Button> 
-      </div>
-      
-
-      <Avatar 
-              style={{display:'flex',marginTop:30}}
-              alt="Remy Sharp"
-              variant="rounded"
-              src={signature.fileName}
-              sx={{ width: 100, height: 100 }}
-              error={!error.signature?false:true} helperText={error.signature} onFocus={()=>handleError('signature',null)}
-            />
-
-</div>
-
-<div style={{display:'flex',justifyContent:"center",alignItems:"center",flexDirection:"row"}}>
-         <div  style={{display:'flex',padding:50,justifyContent:"center",alignItems:"center",}} >
-         <Button variant="contained" component="label">
-         Photograph
-        <input hidden accept="image/*" multiple type="file"  onChange={(event)=>setPhoto({fileName:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]})} />
-      </Button> 
-      </div>
-      
-      <div style={{fontSize:12,fontFamily:'Poppins', letterSpacing:1,}} > (Coloured Passport Size Photo)</div>
-      <Avatar 
-              style={{display:'flex',marginTop:30}}
-              alt="Remy Sharp"
-              variant="rounded"
-              src={photo.fileName}
-              sx={{ width: 100, height: 100 }}
-              error={!error.photo?false:true} helperText={error.photo} onFocus={()=>handleError('photo',null)}
+           
+           <h3 style={{fontSize:17,color:"#273272",fontWeight:'bolder',marginTop:30}}>Acknowledgement </h3>
         
-            />
+  <Grid container spacing={2}>
+  
+  <Grid style={{marginLeft:10,padding:8,fontSize:14}}>
+        I acknowledge that the information provided in this form is accurate and complete to the best of my knowledge. I understand that any false statements or omissions may result in disciplinary action, up to and including termination of employment.  
+        </Grid>
+    
+         
+        <Grid style={{display:'flex',justifyContent:"center",alignItems:"center",flexDirection:"column"}}>
 
-</div>
 
-</div>
+        <Grid style={{display:'flex',justifyContent:"center",alignItems:"center",flexDirection:"row"}}>
 
-
-<Grid item xs={8} style={{display:'flex',justifyContent:"left",alignItems:'left'}}>
-         <div>Date </div>
+        <Grid item xs={3} style={{marginLeft:17}} >
+       
          <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid  justifyContent="space-around">
         
         <KeyboardDatePicker
-          margin="normal"
          
-         
+          label="Date"
+         inputVariant='outlined'
           format="dd/MM/yyyy"
           value={date}
           onChange={handleDate}
@@ -1239,7 +1195,7 @@ Joiner Form
             'aria-label': 'change date',
           }}
           error={!error.date?false:true} helperText={error.date} onFocus={()=>handleError('date',null)}
-        
+          size="small"
         />
        
       </Grid>
@@ -1247,56 +1203,129 @@ Joiner Form
     
     </Grid>
 
-    </div>
 
-     <div style={{marginLeft:20,padding:20,fontSize:16}}>
-         Please return this completed form to the Human Resources department by [deadline]. If you have any questions or need further assistance, please don't hesitate to contact us at [HR contact information]. 
-         </div>
-         <p style={{marginLeft:40}}>
-We look forward to having you as a valuable member of the SFR Medical team! 
-</p>
-<div style={{marginLeft:20,padding:20,fontSize:16,}}>
-<p>
-Note: This joiner form is for internal use only and should be handled with confidentiality. 
-</p>
-SFR Medical, UK  
-<p>
-[Company Address] 
-</p>
-</div>
+        <Grid style={{display:'flex',justifyContent:"center",alignItems:"center",flexDirection:"row"}}>
+         <Grid  style={{display:'flex',padding:40,justifyContent:"center",alignItems:"center",}} >
+         <Button size="small" variant="contained" component="label">
+        Signature
+        <input hidden accept="image/*" multiple type="file"  onChange={(event)=>setSignature({fileName:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]})} />
+      </Button> 
+      </Grid>
+      
+
+      <Avatar 
+              style={{display:'flex'}}
+              alt="Remy Sharp"
+              variant="rounded"
+              src={signature.fileName}
+              sx={{ width: 75, height: 75 }}
+              error={!error.signature?false:true} helperText={error.signature} onFocus={()=>handleError('signature',null)}
+              size="small" />
+
+</Grid>
+
+<Grid style={{display:'flex',justifyContent:"center",alignItems:"center",flexDirection:"row"}}>
+  
+         <Grid  style={{display:'flex',padding:20,justifyContent:"center",alignItems:"center",}} >
+          
+         <Button size="small" variant="contained" component="label">
+         Photograph
+        <input hidden accept="image/*" multiple type="file"  onChange={(event)=>setPhoto({fileName:URL.createObjectURL(event.target.files[0]),bytes:event.target.files[0]})} />
+      </Button> 
+      <div style={{fontSize:10,marginLeft:2}} >(Coloured Passport Size Photo)</div>
+      </Grid>
+      
+      
+      <Avatar 
+             
+              alt="Remy Sharp"
+              variant="rounded"
+              src={photo.fileName}
+              sx={{ width: 75, height: 75 }}
+              error={!error.photo?false:true} helperText={error.photo} onFocus={()=>handleError('photo',null)}
+        
+              size="small"  />
+
+</Grid>
+
+</Grid>
+
+
+
+    </Grid>
+
+
+    <Grid item xs={12} style={{marginLeft:10,padding:8,fontSize:14}}>
+            Please Submit this completed form to the Human Resources department within 24 hours. If you have any questions or need further assistance, please don't hesitate to contact us at reshu.pandey1@nhs.net 
+            </Grid>
+            <Grid item xs={12} style={{marginLeft:10,padding:8,fontSize:14}}>
+            We look forward to having you as a valuable member of the SFR Medical team! 
+            </Grid>
+            <Grid item xs={12} style={{marginLeft:10,padding:8,fontSize:14}}>
+            Note: This joiner form is for internal use only and should be handled with confidentiality. 
+
+            </Grid>
+            <Grid item xs={12} style={{marginLeft:10,padding:8,fontSize:14}}>
+            Streamlined Forensic Reporting Limited
+<br/>
+Flat 1, 359 Clapham Road, London
+<br/>
+SW9 9BT, United Kingdom
+            </Grid>
+            <Grid item xs={12}>
+            </Grid>
 
 <Grid item xs={6}>
-         <Button fullWidth onClick={HandleSubmit} variant="contained">Submit</Button>
+         <Button size="small" fullWidth onClick={HandleSubmit} variant="contained">Submit</Button>
           </Grid>
           <Grid item xs={6}>
-         <Button fullWidth onClick={HandleReset}  variant="contained">Reset</Button>
+         <Button size="small" fullWidth onClick={HandleReset}  variant="contained">Reset</Button>
           </Grid>
       
             </Grid>
           
-          
-          
+           
 
         </div>)
     }
 
 
 
-    return(<div style={{display:"flex",justifyContent:"center",alignItems:"center",width:"100%",background:"#eee"}}>
+
+
+
+
+
+const AllModules=()=>{
+
+  return(<div className={classes.mainContainer}>
+    <div className={classes.box} >
+    
+     {PersonalDetails()}
+     
+     {BankDetails()}
+     {EmergencyContact()}
+     {EmployementHistory()}
+     {EducationalBackground()}
+     {TaxInformation()}
+     {References()}
+     {Acknowledgement()}
+     </div>
       
-       <div style={{display:'flex',flexDirection:"column",justifyContent:"center",alignItems:"center",padding:30,borderRadius:'25px',width:"60%",background:"white",boxShadow:"black"}}>
-      
-       {PersonalDetails()}
-       {BankDetails()}
-       {EmergencyContact()}
-       {EmployementHistory()}
-       {EducationalBackground()}
-       {TaxInformation()}
-       {References()}
-       {Acknowledgement()}
-       </div>
-        
-    </div>)
+  </div>)
+}
+
+
+
+
+
+return( <div style={{width:'100%',display:'flex',flexDirection:'column',backgroundImage:"url(/background.png)" }}>
+
+<AdminAppBar/>
+  {AllModules()}
+  </div>)
+
+
 }
 
 

@@ -1,6 +1,6 @@
 import axios from "axios"
-/*const ServerURL="https://sfr-backends.onrender.com"*/
-const ServerURL="http://localhost:5000"
+const ServerURL="https://newsfr.onrender.com"
+/*const ServerURL="http://localhost:5000"*/
 
 
 const getData=async(url)=>{
